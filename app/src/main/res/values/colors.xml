@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Tons principais-->
+    <color name="color_100">#CCD5FF</color> <!-- Secund -->
+    <color name="color_200">#8295FF</color> <!-- Secund -->
+    <color name="color_300">#3A4FF2</color> <!-- Prim;dark mode -->
+    <color name="color_500">#001259</color> <!-- Prim;light mode -->
+
+    <!-- Cor de erro padr&#195;&#163;o -->
+    <color name="red_error">#F44336</color>
+
+    <!-- Cores b&#195;&#161;sicas -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="dark_gray">#121212</color> <!-- Fundo de cards/dialogs no modo escuro -->
 </resources>
