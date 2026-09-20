@@ -1,4 +1,4 @@
-```# 📊 Otimização de Infraestrutura Cloud via Derivadas Numéricas
+# 📊 Otimização de Infraestrutura Cloud via Derivadas Numéricas
 
 ## 🏫 Informações Institucionais
 * **Instituição:** [Nome da Universidade]
@@ -115,6 +115,3 @@ Ao executar o script, o sistema processa os coeficientes configurados e gera um 
 O desenvolvimento deste projeto permitiu consolidar a relação teórica entre o Cálculo Diferencial e a otimização de algoritmos. No contexto da Ciência da Computação, compreender que problemas contínuos (Cálculo) precisam ser aproximados por métodos discretos (Computação Numérica) é fundamental para construir sistemas de alta performance. 
 
 **Limitação encontrada:** O Método de Newton-Raphson mostrou-se extremamente rápido, porém altamente sensível ao "chute inicial" ($x_0$). Caso o valor inicial seja muito distante ou próximo de um ponto onde $C''(x) = 0$, o algoritmo diverge, evidenciando a necessidade de validações de intervalo (como o Teorema de Bolzano) em sistemas comerciais.
-```
-
-O arquivo deve ter aproximadamente esta estrutura
