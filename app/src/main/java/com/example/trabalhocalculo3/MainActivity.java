@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
 
+import com.example.trabalhocalculo3.mathMotor.VolumeCalculator;
 import com.example.trabalhocalculo3.mesh.Mesh3D;
 import com.example.trabalhocalculo3.mesh.MeshImporter;
 
@@ -30,12 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtImportStatus;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Mesh3D currentMesh;
-    private final ActivityResultLauncher<String[]>
-            openStlLauncher =
-            registerForActivityResult(
-                    new ActivityResultContracts.OpenDocument(),
-                    this::onStlSelected
-            );
+    private final ActivityResultLauncher<String[]> openStlLauncher = registerForActivityResult(
+            new ActivityResultContracts.OpenDocument(), this::onStlSelected);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,28 +85,20 @@ public class MainActivity extends AppCompatActivity {
 
         //Parsing fora da main thread.
         executor.execute(() -> {
-            try (
-                    InputStream inputStream = getContentResolver().openInputStream(uri)
-            ) {
+            try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
                 if (inputStream == null) {
-                    throw new Exception(
-                            "Não foi possível abrir o arquivo."
-                    );
+                    throw new Exception("Não foi possível abrir o arquivo.");
                 }
 
                 Mesh3D mesh = MeshImporter.importStl(inputStream);
-                String debug = "";
                 if(mesh.getPositions() == null || mesh.getNormals() == null){
-                    debug = "falha";
                     throw new Exception("erro na importação.");
                 }
                 currentMesh = mesh;
-                debug = "sucesso";
-
-                String finalDebug = debug;
                 runOnUiThread(() -> {
-                    txtImportStatus.setText(finalDebug);
+                    txtImportStatus.setText("Importação concluída com sucesso");
                     btnImportStl.setEnabled(true);
+                    volume = VolumeCalculator.computeVolume(mesh);
 
                     /*
                      * SendMeshToRenderer(currentMesh);
@@ -117,9 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             } catch (Exception e) {
                 runOnUiThread(() -> {
-                    txtImportStatus.setText("Falha ao importar STL:\n"
-                            + e.getMessage()
-                    );
+                    txtImportStatus.setText(e.getMessage());
                     btnImportStl.setEnabled(true);
                 });
             }
