@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TrabalhoCalculo3</string>
+    <string-array name="unidades_array">
+        <item>Milímetros</item>
+        <item>Centímetros</item>
+        <item>Metros</item>
+    </string-array>
 </resources>
