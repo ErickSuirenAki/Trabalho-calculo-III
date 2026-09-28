@@ -1,5 +1,8 @@
 package com.example.trabalhocalculo3;
 
+import static com.example.trabalhocalculo3.mathMotor.ConvertUnits.convertDensity;
+import static com.example.trabalhocalculo3.mathMotor.ConvertUnits.convertVolume;
+
 import android.os.Bundle;
 
 import android.view.View;
@@ -83,16 +86,6 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-    }
-
-    private double convertVolume(double value, Unit from, Unit to) {
-        double factor = from.getMetersPerUnit() / to.getMetersPerUnit();
-        return value * factor * factor * factor;
-    }
-
-    private double convertDensity(double value, Unit from, Unit to) {
-        double factor = to.getMetersPerUnit() / from.getMetersPerUnit();
-        return value * factor * factor * factor;
     }
 
     private void updateResults() {
