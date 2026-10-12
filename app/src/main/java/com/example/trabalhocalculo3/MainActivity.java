@@ -22,6 +22,8 @@ import com.example.trabalhocalculo3.util.Unit;
 import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import com.example.trabalhocalculo3.graphics.GraphSurfaceView;
+
 
 public class MainActivity extends AppCompatActivity {
     private TextView txtDensityLabel;
@@ -38,18 +40,21 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spinner;
     private Unit modelUnit = Unit.MILLIMETER; // unidade utilizada pelo modelo; informado pelo usuário
     private Unit displayUnit = Unit.MILLIMETER; // unidade mostrada; pode ser alterada pelo usuário
+    private GraphSurfaceView graphView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
-        btnImportStl = findViewById(R.id.btnImport);
-        txtImportStatus = findViewById(R.id.textImportStatus);
-        SeekBar seekDensity = findViewById(R.id.seekDensity);
-        txtDensityLabel = findViewById(R.id.txtDensityLabel);
-        txtResults = findViewById(R.id.txtResults);
-        spinner = findViewById(R.id.spinner);
+    graphView = findViewById(R.id.graphView);
+
+    btnImportStl = findViewById(R.id.btnImport);
+    txtImportStatus = findViewById(R.id.textImportStatus);
+    SeekBar seekDensity = findViewById(R.id.seekDensity);
+    txtDensityLabel = findViewById(R.id.txtDensityLabel);
+    txtResults = findViewById(R.id.txtResults);
+    spinner = findViewById(R.id.spinner);
 
         btnImportStl.setOnClickListener(v -> openStlLauncher.launch(new String[]{"*/*"}));
 
@@ -84,6 +89,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void SendMeshToRenderer(Mesh3D mesh) {
+
+    if (graphView == null || mesh == null) {
+        return;
+    }
+
+    graphView
+            .getRenderer()
+            .setMesh(mesh);
+
+    graphView.requestRender();
+}
 
     private double convertVolume(double value, Unit from, Unit to) {
         double factor = from.getMetersPerUnit() / to.getMetersPerUnit();
@@ -188,10 +206,10 @@ public class MainActivity extends AppCompatActivity {
                     rawVolume = VolumeCalculator.computeVolume(mesh);
                     updateResults();
 
-                    /*
-                     * SendMeshToRenderer(currentMesh);
-                     */
+                    
+                     SendMeshToRenderer(currentMesh);
                 });
+
             } catch (Exception e) {
                 runOnUiThread(() -> {
                     txtImportStatus.setText(e.getMessage());
