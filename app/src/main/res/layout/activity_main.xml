@@ -6,66 +6,146 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/textImportStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnImport"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Importar objeto 3D" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <!-- VISUALIZADOR 3D -->
-        <com.example.trabalhocalculo3.graphics.GraphSurfaceView
-            android:id="@+id/graphView"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="16dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Calculadora e Visualizador 3D de Peças CAD"
+                android:textColor="#212121"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Informe a unidade utilizada" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
+                android:text="Importe um arquivo.stl para calcular suas propriedades"
+                android:textColor="#666666"
+                android:textSize="14sp" />
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/unidades_array" />
+            <Button
+                android:id="@+id/btnImport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Importar objeto 3D"
+                android:textAllCaps="false" />
 
-        <TextView
-            android:id="@+id/txtDensityLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Densidade (kg/m³): 1.0" />
+            <TextView
+                android:id="@+id/textImportStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="#757575"
+                android:textSize="13sp"
+                tools:text="Nenhum objeto importado" />
 
-        <SeekBar
-            android:id="@+id/seekDensity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="1000"
-            android:progress="100" />
+            <com.example.trabalhocalculo3.graphics.GraphSurfaceView
+                android:id="@+id/graphView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="4dp" />
 
-        <TextView
-            android:id="@+id/txtResults"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Volume: --&#10;Massa: --&#10;Centro de massa: --" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Unidade de medida"
+                android:textColor="#212121"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textViewSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Informe a unidade utilizada"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:entries="@array/unidades_array" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Densidade do material"
+                android:textColor="#212121"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDensityLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Densidade (kg/m³): 1.0"
+                android:textColor="#424242"
+                android:textSize="14sp" />
+
+            <SeekBar
+                android:id="@+id/seekDensity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="1000"
+                android:progress="100" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Resultados"
+                android:textColor="#212121"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
+                android:background="#F5F5F5"
+                android:padding="12dp"
+                android:lineSpacingExtra="6dp"
+                android:text="Volume: --&#10;Massa: --&#10;Centro de massa: --"
+                android:textColor="#333333"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

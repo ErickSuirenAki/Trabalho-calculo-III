@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.example.trabalhocalculo3.mathMotor.MassCalculator;
 import com.example.trabalhocalculo3.mathMotor.VolumeCalculator;
@@ -192,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
             try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
                 if (inputStream == null) {
                     throw new Exception("Não foi possível abrir o arquivo.");
+
                 }
 
                 Mesh3D mesh = MeshImporter.importStl(inputStream);
