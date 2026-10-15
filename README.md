@@ -1,117 +1,153 @@
-# 📊 Otimização de Infraestrutura Cloud via Derivadas Numéricas
+# 📐 Calculadora e Visualizador 3D de Peças CAD (Cálculo III)
 
 ## 🏫 Informações Institucionais
-* **Instituição:** [Nome da Universidade]
+
+* **Instituição:** Fundação Universidade Federal de Rondônia
 * **Curso:** Ciência da Computação
-* **Disciplina:** Cálculo Diferencial e Integral [I, II ou Numérico]
-* **Professor(a):** Prof. Dr(a). [Nome do Professor]
-* **Período:** [Ex: 2º Semestre / 2026]
+* **Disciplina:** Cálculo III
+* **Professor(a):** Prof. Esp. Rodrigo Duarte de Oliveira Tolêdo 
+* **Período:** 2º Semestre / 2026
 
 ### 👥 Integrantes do Grupo
-* [Nome do Aluno 1] - RA: [00000000]
-* [Nome do Aluno 2] - RA: [00000000]
-* [Nome do Aluno 3] - RA: [00000000]
+
+* Anna Júlia Oliveira de Sousa 
+* Bruna Caculakis Santos 
+* Camila Fernanda de Araujo Silva 
+* Erick Batista dos Santos 
+* Lara Pereira Ferreira 
+* Maurício de Oliveira Pinto Júnior
 
 ---
 
 ## 🔍 Visão Geral do Projeto
-Este projeto acadêmico aplica conceitos de **Cálculo Diferencial** para resolver um problema real de Engenharia de Software: a **otimização de custos e alocação de servidores em nuvem**. 
 
-O software simula o comportamento de tráfego de um sistema web e encontra matematicamente o ponto mínimo da curva de custo operacional, garantindo a máxima eficiência com o menor gasto financeiro possível.
+Este projeto consiste em um aplicativo Android desenvolvido em **Java e OpenGL ES 3.0** projetado como uma ferramenta interativa para **Engenharia e Física Computacional**. O aplicativo permite a importação de arquivos de malhas tridimensionais (no formato **STL Binário ou ASCII**) e a definição da densidade do material.
+
+A partir dos dados geométricos e físicos, a aplicação utiliza **Integração Numérica e Cálculo Vetorial** para processar e exibir em tempo real:
+
+* Volume do objeto 3D;
+* Massa total;
+* Centro de massa $(\bar{x}, \bar{y}, \bar{z})$;
+* Renderização 3D interativa do modelo com marcador do centro de massa e normalização de escala/orientação.
 
 ---
 
 ## 📐 Conceitos de Cálculo Aplicados
 
-### 1. Modelagem da Função Custo
-A taxa de gasto por hora de uma infraestrutura que processa \(x\) requisições simultâneas é modelada pela função:
+### 1. Decomposição Geometrica em Tetraedros
 
-\[C(x) = ax^2 + \frac{b}{x} + c\]
+A malha do objeto STL é composta por uma coleção de triângulos na superfície. Para aplicar o **Teorema da Divergência (Gauss)** em uma malha arbitrária, cada triângulo de vértices $\mathbf{r}_1, \mathbf{r}_2, \mathbf{r}_3$ forma um tetraedro orientado com a origem $(0,0,0)$.
 
-Onde:
-* \(ax^2\) representa o custo de processamento e energia (cresce exponencialmente com a carga).
-* \(\frac{b}{x}\) representa o custo de ociosidade do servidor (quanto menos requisições por máquina, maior o custo fixo desperdiçado por requisição).
-* \(c\) representa os custos contratuais fixos da nuvem.
+### 2. Cálculo do Volume via Produto Misto
 
-### 2. Otimização via Derivadas (Ponto de Mínimo)
-Para encontrar o número ideal de requisições por servidor que minimiza o custo, o algoritmo busca o ponto crítico onde a **primeira derivada da função é igual a zero**:
+O volume orientado (com sinal) de cada tetraedro é calculado pelo produto misto dos vetores dos vértices dividido por 6:
 
-\[C'(x) = 2ax - \frac{b}{x^2} = 0\]
+$$V_i = \frac{1}{6} \left( \mathbf{r}_1 \cdot (\mathbf{r}_2 \times \mathbf{r}_3) \right)$$
 
-### 3. Abordagem Computacional (Cálculo Numérico)
-Como em cenários reais as funções de custo podem ser complexas e não-lineares, o sistema utiliza o **Método de Newton-Raphson** para encontrar a raiz da derivada (\(C'(x) = 0\)) de forma iterativa:
+O volume total do corpo rígido é a soma absoluta dos volumes orientados de todos os tetraedros:
 
-\[x_{n+1} = x_n - \frac{C'(x_n)}{C''(x_n)}\]
+$$V = \left\vert{} \sum_{i=1}^{N} V_i \right\vert{}$$
+
+### 3. Centro de Massa via Média Ponderada
+
+O centróide $\mathbf{c}_i$ de cada tetraedro (com um dos vértices na origem) é a média aritmética simples dos seus vértices:
+
+$$\mathbf{c}_i = \frac{\mathbf{r}_1 + \mathbf{r}_2 + \mathbf{r}_3}{4}$$
+
+Para densidade uniforme ($\rho$), o Centro de Massa Global $(\bar{x}, \bar{y}, \bar{z})$ é dado pela soma dos centróides ponderada pelos volumes orientados de cada tetraedro sobre o volume total:
+
+$$\bar{x} = \frac{\sum (c_{i, x} \cdot V_i)}{\sum V_i}, \quad \bar{y} = \frac{\sum (c_{i, y} \cdot V_i)}{\sum V_i}, \quad \bar{z} = \frac{\sum (c_{i, z} \cdot V_i)}{\sum V_i}$$
 
 ---
 
 ## 🛠️ Tecnologias e Dependências
 
-O projeto foi desenvolvido utilizando as seguintes ferramentas:
+* **Linguagem Principal:** Java (Compatível com Android SDK 21+)
 
-* **Linguagem Principal:** Python 3.10+
-* **Interface Gráfica e Plots:** Matplotlib (versão 3.7+)
-* **Processamento Vetorial:** NumPy (versão 1.24+)
+
+* **Interface Gráfica e UI:** Android Jetpack / AppCompat
+
+
+* **Renderização Gráfica 3D:** OpenGL ES 3.0 (`GLSurfaceView` e Shaders em GLSL)
+
+
+* **Manipulação e Conversão de Dados:** Java NIO (`ByteBuffer`, `ByteOrder`)
+
+
 
 ---
 
 ## 📂 Estrutura do Repositório
 
 ```text
-├── src/                  # Código-fonte do projeto
-│   ├── main.py           # Ponto de entrada do programa e interface
-│   ├── calculus.py       # Algoritmos matemáticos (Newton-Raphson, derivadas)
-│   └── config.py         # Constantes e modelagem das funções de custo
-├── docs/                 # Relatórios acadêmicos e PDFs (se houver)
-├── README.md             # Documentação principal
-└── requirements.txt      # Arquivo de dependências do Python
+app/src/main/java/com/example/trabalhocalculo3/
+├── MainActivity.java           # Orquestração do ciclo de vida da UI e eventos
+├── graphics/                   # Camada de renderização OpenGL ES
+│   ├── GraphRenderer.java      # Pipeline do OpenGL, shaders e transformações MVP
+│   ├── GraphSurfaceView.java   # View Android customizada para exibição 3D
+│   └── Sphere.java             # Gerador geométrico para o indicador do Centro de Massa
+├── mathMotor/                  # Módulo de cálculo numérico isolado da UI
+│   ├── VolumeCalculator.java   # Algoritmo de cálculo de volume orientado
+│   ├── MassCalculator.java     # Algoritmo de cálculo do Centro de Massa
+│   └── ConvertUnits.java       # Utilitário para conversão de unidades (mm, cm, m)
+├── mesh/                       # Estruturas e importação de modelos 3D
+│   ├── Mesh3D.java             # POJO da malha (vértices, normais, bounding box)
+│   ├── MeshImporter.java       # Parser genérico para STL (Binário e ASCII)
+│   └── StlFormat.java          # Enum para identificação de formato (BINARY, ASCII, INVALID)
+└── util/
+    └── Unit.java               # Definições de unidades de medida
+
 ```
 
 ---
 
 ## 🚀 Como Executar o Projeto
 
-Siga os passos abaixo para rodar a aplicação na sua máquina local:
-
 ### 1. Clonar o Repositório
+
 ```bash
-git clone https://github.com[seu-usuario]/[nome-do-repositorio].git
+git clone https://github.com/[seu-usuario]/[nome-do-repositorio].git
 cd [nome-do-repositorio]
+
 ```
 
-### 2. Instalar as Dependências
-Recomenda-se o uso de um ambiente virtual (venv):
-```bash
-python -m venv venv
-source venv/bin/activate  # No Windows use: venv\Scripts\activate
-pip install -r requirements.txt
-```
+### 2. Abrir no Android Studio
 
-### 3. Rodar a Aplicação
-```bash
-python src/main.py
-```
+1. Abra o **Android Studio**.
+2. Selecione **Open an Existing Project**.
+3. Navegue até a pasta clonada e selecione-a.
+4. Aguarde a sincronização do Gradle.
+
+### 3. Executar o Aplicativo
+
+* Conecte um dispositivo físico Android via depuração USB ou inicie um Emulador Android (API 21 ou superior).
+* Pressione **Run** (`Shift + F10`).
 
 ---
 
 ## 📈 Exemplos de Uso e Resultados
 
-Ao executar o script, o sistema processa os coeficientes configurados e gera um gráfico interativo mostrando a convergência para o ponto mínimo.
+1. **Importação:** Clique no botão de importação e selecione qualquer arquivo `.stl` (binário ou ASCII) via *Storage Access Framework*.
 
-### Cenário de Teste Padrão
-* **Entrada:** Coeficientes $a = 0.005$, $b = 2000$, $c = 50$
-* **Chute Inicial ($x_0$):** 50 requisições
-* **Resultado:** O algoritmo convergiu em **5 iterações**.
-* **Ponto Ótimo Calculado:** $x \approx 58.48$ requisições por servidor.
-* **Custo Mínimo:** $R\$ 101,24$ por hora.
 
-*(Insira aqui um print do gráfico gerado pelo seu programa)*
-![Gráfico de Otimização de Custos](https://placeholder.com)
+2. **Seleção de Unidades:** Escolha a unidade de medida do arquivo original (mm, cm ou m).
+
+
+3. **Ajuste de Densidade:** Mova o slider de densidade para recalcular a massa em tempo real.
+
+
+4. **Visualização 3D:** O objeto é renderizado automaticamente com normalização de escala e reorientação de coordenadas (Z-Up para Y-Up), contendo um marcador visual vermelho indicando a posição exata do **Centro de Massa**.
+
+
 
 ---
 
-## 💡 Conclusão e Aprendizados
+## 💡 Conclusão e Desafios Superados
 
-O desenvolvimento deste projeto permitiu consolidar a relação teórica entre o Cálculo Diferencial e a otimização de algoritmos. No contexto da Ciência da Computação, compreender que problemas contínuos (Cálculo) precisam ser aproximados por métodos discretos (Computação Numérica) é fundamental para construir sistemas de alta performance. 
+* **Compatibilidade de Arquivos:** Ajustes de leitura de bytes com `readAllBytes` retrocompatível para evitar falhas em versões legadas do Android.
 
-**Limitação encontrada:** O Método de Newton-Raphson mostrou-se extremamente rápido, porém altamente sensível ao "chute inicial" ($x_0$). Caso o valor inicial seja muito distante ou próximo de um ponto onde $C''(x) = 0$, o algoritmo diverge, evidenciando a necessidade de validações de intervalo (como o Teorema de Bolzano) em sistemas comerciais.
+
+* **Sistemas de Coordenadas:** Conversão do padrão CAD/STL (onde a vertical é o eixo $Z$) para o padrão OpenGL ES (onde a vertical é o eixo $Y$) através de matrizes de rotação no eixo $X$.
+
+
+* **Normalização Automática de Escala:** Implementação da *Bounding Box* para centralizar objetos com origens deslocadas e enquadrar dinamicamente peças de qualquer dimensão no campo de visão da câmera.

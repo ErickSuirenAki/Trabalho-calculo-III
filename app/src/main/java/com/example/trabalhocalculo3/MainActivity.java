@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
 
+import com.example.trabalhocalculo3.mathMotor.MassCalculator;
 import com.example.trabalhocalculo3.mathMotor.VolumeCalculator;
 import com.example.trabalhocalculo3.mesh.Mesh3D;
 import com.example.trabalhocalculo3.mesh.MeshImporter;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Unit modelUnit = Unit.MILLIMETER; // unidade utilizada pelo modelo; informado pelo usuário
     private Unit displayUnit = Unit.MILLIMETER; // unidade mostrada; pode ser alterada pelo usuário
     private GraphSurfaceView graphView;
+    private double[] rawCenterOfMass = new double[]{0, 0, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,11 +119,18 @@ public class MainActivity extends AppCompatActivity {
         );
 
         mass = rawVolume * density;
+
+        // Conversão das coordenadas do Centro de Massa para a unidade selecionada
+        double factor = modelUnit.getMetersPerUnit() / displayUnit.getMetersPerUnit();
+        double cmX = rawCenterOfMass[0] * factor;
+        double cmY = rawCenterOfMass[1] * factor;
+        double cmZ = rawCenterOfMass[2] * factor;
+
         txtDensityLabel.setText(String.format("Densidade (kg/%s): %.6f",
                 displayUnit.getVolumeSymbol(), displayedDensity));
 
-        txtResults.setText(String.format("Volume: %.9f %s\n" + "Massa: %.2f kg\n" + "Centro de massa: --",
-                displayedVolume, displayUnit.getVolumeSymbol(), mass));
+        txtResults.setText(String.format("Volume: %.9f %s\nMassa: %.2f kg\nCentro de massa: (%.2f, %.2f, %.2f) %s",
+                displayedVolume, displayUnit.getVolumeSymbol(), mass, cmX, cmY, cmZ, displayUnit.getSymbol()));
     }
 
     @Override
@@ -194,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
                     txtImportStatus.setText("Importação concluída com sucesso");
                     btnImportStl.setEnabled(true);
                     rawVolume = VolumeCalculator.computeVolume(mesh);
+                    rawVolume = VolumeCalculator.computeVolume(mesh);
+                    rawCenterOfMass = MassCalculator.computeCenterOfMass(mesh);
                     updateResults();
 
                     
