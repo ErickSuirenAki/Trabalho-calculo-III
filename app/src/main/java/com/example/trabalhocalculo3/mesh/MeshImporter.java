@@ -17,31 +17,30 @@ import java.util.StringTokenizer;
 
 // melhorar o tratamento de excessões
 public class MeshImporter {
-    public static Mesh3D importStl(InputStream inputStream){
+    public static Mesh3D importStl(InputStream inputStream) {
         Mesh3D mesh = new Mesh3D(null, null);
 
-        if(inputStream == null){
+        if (inputStream == null) {
             return mesh;
         }
 
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                byte[] data = inputStream.readAllBytes();
+            byte[] data = readAllBytes(inputStream);
 
-                if(data.length == 0){// arquivo vazio
-                    return mesh;
-                }
-
-                StlFormat format = detectFormat(data);
-
-                if (format == StlFormat.BINARY) {
-                    return parseBinary(data);
-                }
-
-                if (format == StlFormat.ASCII) {
-                    return parseAscii(data);
-                }
+            if (data.length == 0) { // arquivo vazio
+                return mesh;
             }
+
+            StlFormat format = detectFormat(data);
+
+            if (format == StlFormat.BINARY) {
+                return parseBinary(data);
+            }
+
+            if (format == StlFormat.ASCII) {
+                return parseAscii(data);
+            }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

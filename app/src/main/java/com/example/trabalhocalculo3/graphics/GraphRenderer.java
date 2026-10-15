@@ -274,20 +274,25 @@ public class GraphRenderer implements GLSurfaceView.Renderer {
          */
 
         rotationAngle += 0.5f;
+        Matrix.setIdentityM(modelMatrix, 0);
 
-        Matrix.setIdentityM(
-                modelMatrix,
-                0
-        );
+        // Rotação do objeto
+        Matrix.rotateM(modelMatrix, 0, rotationAngle, 0.0f, 1.0f, 0.0f);
 
-        Matrix.rotateM(
-                modelMatrix,
-                0,
-                rotationAngle,
-                0.0f,
-                1.0f,
-                0.0f
-        );
+        // Correção de orientação para OpenGL
+        Matrix.rotateM(modelMatrix, 0, -90.0f, 1.0f, 0.0f, 0.0f);
+
+        // Cálculo do fator de escala
+        float boundingRadius = mesh.getBoundingRadius();
+        float targetSize = 1.5f; // Tamanho para caber na visão da câmera
+        float scale = (boundingRadius > 0) ? (targetSize / boundingRadius) : 1.0f;
+
+        // Aplica a escala proporcional no modelo
+        Matrix.scaleM(modelMatrix, 0, scale, scale, scale);
+
+        // Centralização do modelo na origem (0,0,0)
+        float[] center = mesh.getCenter();
+        Matrix.translateM(modelMatrix, 0, -center[0], -center[1], -center[2]);
 
         /*
          * =========================================================
