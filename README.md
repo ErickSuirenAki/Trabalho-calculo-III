@@ -106,8 +106,8 @@ app/src/main/java/com/example/trabalhocalculo3/
 ### 1. Clonar o Repositório
 
 ```bash
-git clone https://github.com/[seu-usuario]/[nome-do-repositorio].git
-cd [nome-do-repositorio]
+git clone https://github.com/ErickSuirenAki/Trabalho-calculo-III
+cd Trabalho-calculo-III
 
 ```
 
